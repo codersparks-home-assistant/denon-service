@@ -1,4 +1,4 @@
-package uk.codersparks.homeassistant.dennonservices.model;
+package uk.codersparks.homeassistant.denonservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DennonAVRBox {
+public class DenonAVRBox {
 
     @Id
     private String id;
