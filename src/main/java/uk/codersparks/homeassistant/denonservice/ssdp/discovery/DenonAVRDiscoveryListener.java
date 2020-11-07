@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.codersparks.homeassistant.denonservice.model.DenonAVRBox;
 import uk.codersparks.homeassistant.denonservice.service.DenonAVRBoxService;
+import uk.codersparks.homeassistant.ssdp.config.HomeAssistantSSDPProperties;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,17 +22,18 @@ public class DenonAVRDiscoveryListener implements DiscoveryListener {
 
 
     private final DenonAVRBoxService denonAVRBoxService;
+    private final HomeAssistantSSDPProperties properties;
 
-    public DenonAVRDiscoveryListener(DenonAVRBoxService denonAVRBoxService) {
+    public DenonAVRDiscoveryListener(DenonAVRBoxService denonAVRBoxService, HomeAssistantSSDPProperties properties) {
         this.denonAVRBoxService = denonAVRBoxService;
+        this.properties = properties;
     }
 
     @Override
     public void onServiceDiscovered(SsdpService service) {
         try {
             logger.debug("Service detected: " + service);
-            updateBoxDetails(service.getSerialNumber(), service.getLocation());
-
+            updateBoxDetails(service.getSerialNumber(), service.getLocation(), service.getServiceType());
         } catch (MalformedURLException e) {
             logger.error("Malformed service location", e);
         }
@@ -41,7 +43,7 @@ public class DenonAVRDiscoveryListener implements DiscoveryListener {
     public void onServiceAnnouncement(SsdpServiceAnnouncement announcement) {
         try {
             logger.debug("Service Announcement detected: " + announcement);
-            updateBoxDetails(announcement.getSerialNumber(), announcement.getLocation());
+            updateBoxDetails(announcement.getSerialNumber(), announcement.getLocation(), announcement.getServiceType());
         } catch (MalformedURLException e) {
             logger.error("Malformed announcement location", e);
         }
@@ -53,7 +55,13 @@ public class DenonAVRDiscoveryListener implements DiscoveryListener {
 
     }
 
-    private void updateBoxDetails(String serialNumber, String location) throws MalformedURLException {
+    private void updateBoxDetails(String serialNumber, String location, String serviceType) throws MalformedURLException {
+
+        if(! properties.getIdentifyingSchema().equals(serviceType)) {
+            logger.debug("Ignoring service type: " + serviceType + " because it is not desired: " + properties.getIdentifyingSchema());
+            return;
+        }
+
         String id = serialNumber.split(":")[1];
 
         DenonAVRBox box = this.denonAVRBoxService.getDenonAVRBoxBlocking(id).orElse(new DenonAVRBox(id, null, null));
