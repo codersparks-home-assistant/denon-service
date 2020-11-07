@@ -4,7 +4,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'dennon-services'
+rootProject.name = 'denon-service'
 
 buildscript {
     repositories {

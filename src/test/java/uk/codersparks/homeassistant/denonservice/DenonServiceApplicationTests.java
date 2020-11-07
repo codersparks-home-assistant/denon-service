@@ -1,10 +1,10 @@
-package uk.codersparks.homeassistant.dennonservices;
+package uk.codersparks.homeassistant.denonservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DennonServicesApplicationTests {
+class DenonServiceApplicationTests {
 
     @Test
     void contextLoads() {
