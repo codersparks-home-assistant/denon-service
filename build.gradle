@@ -1,4 +1,6 @@
 plugins {
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
     id 'maven-publish'
 }
@@ -16,8 +18,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-}
 
 // Trying to fix publish to github packages: https://stackoverflow.com/a/62645933
 configurations {
@@ -29,14 +29,11 @@ configurations {
     }
 }
 
-test {
-}
-
 publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/codersparks-home-assistant/<insert-project-name>")
+            url = uri("https://maven.pkg.github.com/codersparks-home-assistant/dennon-services")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
@@ -48,4 +45,22 @@ publishing {
             from(components.java)
         }
     }
+
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+test {
+    useJUnitPlatform()
 }
