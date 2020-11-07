@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.codersparks.homeassistant.denonservice.service.DenonAVRBoxService;
 import uk.codersparks.homeassistant.denonservice.ssdp.discovery.DenonAVRDiscoveryListener;
+import uk.codersparks.homeassistant.ssdp.config.HomeAssistantSSDPProperties;
 
 /**
  * Loads beans for use within service
@@ -19,8 +20,8 @@ public class BeanConfig {
     }
 
     @Bean
-    public DiscoveryListener discoveryListener(DenonAVRBoxService service) {
-        return new DenonAVRDiscoveryListener(service);
+    public DiscoveryListener discoveryListener(DenonAVRBoxService service, HomeAssistantSSDPProperties properties) {
+        return new DenonAVRDiscoveryListener(service, properties);
     }
 
 }
