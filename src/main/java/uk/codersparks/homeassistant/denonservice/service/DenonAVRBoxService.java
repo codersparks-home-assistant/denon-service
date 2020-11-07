@@ -22,7 +22,6 @@ public class DenonAVRBoxService {
         this.repository = repository;
     }
 
-
     public Optional<DenonAVRBox> getDenonAVRBoxBlocking(String id) {
 
         logger.debug("Getting box with id: " + id);

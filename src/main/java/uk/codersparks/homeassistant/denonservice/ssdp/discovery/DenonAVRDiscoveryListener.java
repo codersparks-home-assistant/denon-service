@@ -34,7 +34,6 @@ public class DenonAVRDiscoveryListener implements DiscoveryListener {
         try {
             logger.debug("Service detected: " + service);
             updateBoxDetails(service.getSerialNumber(), service.getLocation(), service.getServiceType());
-
         } catch (MalformedURLException e) {
             logger.error("Malformed service location", e);
         }
